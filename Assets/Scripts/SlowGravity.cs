@@ -19,7 +19,7 @@ public class SlowGravity : MonoBehaviour {
     }
 
     void Update() {
-       // UpdateTrajectory(this.transform.position, this.GetComponent<Rigidbody>().velocity, new Vector3(0, -10, 0));
+        UpdateTrajectory(this.transform.position, this.GetComponent<Rigidbody>().velocity, new Vector3(0, -10, 0));
 
     }
 
@@ -27,7 +27,7 @@ public class SlowGravity : MonoBehaviour {
     {
         int numSteps = 100; // for example
         float timeDelta = 1.0f / initialVelocity.magnitude; // for example
-
+            
         LineRenderer lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.SetVertexCount(numSteps);
 
