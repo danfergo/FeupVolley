@@ -19,7 +19,7 @@ public class SlowGravity : MonoBehaviour {
             rb.AddForce(Physics.gravity* -1 * antiGravity * rb.mass);
 
 
-        predict(this.transform.position, this.GetComponent<Rigidbody>().velocity, new Vector3(0, -10, 0));
+       // predict(this.transform.position, this.GetComponent<Rigidbody>().velocity, new Vector3(0, -10, 0));
 
     }
    /* void OnCollisionExit(Collision other) {
