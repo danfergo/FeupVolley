@@ -6,11 +6,10 @@ public class Movement : MonoBehaviour
 
     private Rigidbody rb;
     public float speed; 
-	private float assistZ = 30.0f;
-	private float assistY = 10.0f;
 	public Transform playerPositionHelper;
-	private Vector3 goalPosition;
-	private Vector3 groundPosition;
+	private Vector3 airTargetPosition;
+	private Vector3 groundTargetPosition;
+	private float airStrikeHeight = 6.0f;
 
     // Use this for initialization
     void Start()
@@ -20,7 +19,9 @@ public class Movement : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
 
-		goalPosition = new Vector3 (0.0f, 10.0f, 9f); // x position is not relevant since it's the players x velocity
+		airTargetPosition = new Vector3 (0.0f, 12.0f, 9f); // x position is not relevant since it's the players x velocity
+		groundTargetPosition = new Vector3 (0.0f, 8.0f, 9f); // x position is not relevant since it's the players x velocity
+	
     }
 
 
@@ -36,26 +37,24 @@ public class Movement : MonoBehaviour
         float v = Input.GetAxis("Vertical2");
 		rb.velocity =  new Vector3(-v * speed, rb.velocity.y, h* speed );
 
-		if(Input.GetButton("Jump2") ){
-			rb.velocity = new Vector3( rb.velocity.x, 2.5f, rb.velocity.z);
+		if(Input.GetButtonDown("Jump2") ){
+			rb.velocity = new Vector3( rb.velocity.x, 7f, rb.velocity.z);
 		}
     }
 
 
-	void OnCollisionEnter(Collision collision){
+	void OnCollisionExit(Collision collision){
 		Transform other = collision.gameObject.transform;
 
 		if (other.name == "Ball") {
 			Rigidbody otherRb = collision.gameObject.GetComponent<Rigidbody> ();
-			if (rb.position.y < 5f) {
-				Vector3 assistedVelocity = (goalPosition - other.position).normalized * 15.0f;
+			if (rb.position.y < airStrikeHeight) {
+				Vector3 assistedVelocity = (airTargetPosition - other.position).normalized * 15.0f;
 				otherRb.velocity = new Vector3 (rb.velocity.x, assistedVelocity.y, assistedVelocity.z);
 			} else {
-			//	Vector3 assistedVelocity = (goalPosition - other.position).normalized * 15.0f;
-
-				otherRb.velocity = new Vector3 (rb.velocity.x, -3.0f, 15.0f);
+				Vector3 assistedVelocity = (groundTargetPosition - other.position).normalized * 30.0f;
+				otherRb.velocity = new Vector3 (rb.velocity.x, assistedVelocity.y, assistedVelocity.z);
 			}
-
 			//float zPPosition = other.position.z / 8.0f;
 
 			// Debug.Log ("Assist: " + new Vector3(0.0f, 9.0f, assistZ/zPPosition));

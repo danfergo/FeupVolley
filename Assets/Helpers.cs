@@ -44,7 +44,7 @@ public class Helpers : MonoBehaviour {
 			velocity += gravity * Time.fixedDeltaTime;
 			RaycastHit hit;
 			if (Physics.Linecast (last_pos, (last_pos + (velocity * Time.fixedDeltaTime)), out hit)) {
-				velocity = Vector3.Reflect (velocity, hit.normal);
+				velocity = Vector3.Reflect (velocity * 0.9f, hit.normal);
 				last_pos = hit.point;
 
 				if (hit.collider.gameObject.transform.name == "Ground" || hit.collider.gameObject.transform.name=="Sphere") {
