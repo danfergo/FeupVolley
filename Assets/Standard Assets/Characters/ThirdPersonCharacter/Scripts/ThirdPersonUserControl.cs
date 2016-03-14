@@ -10,6 +10,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
         public float fireStrength = 500;
         public Color nextColor = Color.red;
+		private Rigidbody rb;
+		public float speed; 
 
         private ThirdPersonCharacter m_Character; // A reference to the ThirdPersonCharacter on the object
         private Transform m_Cam;                  // A reference to the main camera in the scenes transform
@@ -34,25 +36,29 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
             // get the third person character ( this should never be null due to require component )
             m_Character = GetComponent<ThirdPersonCharacter>();
+			rb = GetComponent<Rigidbody>();
         }
 
 
         private void Update()
         {
-            if (!m_Jump)
-            {
+
+           // if (!m_Jump)
+           // {
                 m_Jump = CrossPlatformInputManager.GetButtonDown("Jump"+playerId);
-            }
+            //}
         }
 
 
         // Fixed update is called in sync with physics
         private void FixedUpdate()
         {
+
             // read inputs
             float h = CrossPlatformInputManager.GetAxis("Horizontal"+playerId);
             float v = CrossPlatformInputManager.GetAxis("Vertical" + playerId);
-            bool crouch = Input.GetKey(KeyCode.C);
+		
+			bool crouch = false; // Input.GetKey(KeyCode.C);
 
             // calculate move direction to pass to character
             if (m_Cam != null)
@@ -73,7 +79,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
             // pass all parameters to the character control script
             m_Character.Move(m_Move, crouch, m_Jump);
-            m_Jump = false;
+          //  m_Jump = false;
         }
     }
 }

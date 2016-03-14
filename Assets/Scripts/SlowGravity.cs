@@ -37,14 +37,18 @@ public class SlowGravity : MonoBehaviour {
         lineRenderer.SetPosition(0, last_pos);
         int i = 1;
         int hitCounter = 0;
-        while (i < 150)
+        while (i < 3000)
         {
             velocity += gravity * Time.fixedDeltaTime;
-            RaycastHit hit;
-            if (Physics.Linecast(last_pos, (last_pos + (velocity * Time.fixedDeltaTime)), out hit))
+            RaycastHit hit, realHit;
+			if (Physics.SphereCast(last_pos,1.25f , (last_pos + (velocity * Time.fixedDeltaTime)), out hit))
             {
-                velocity = Vector3.Reflect(velocity * 0.9f, hit.normal);
-                last_pos = hit.point;
+				Physics.Linecast (last_pos, hit.point, out realHit);
+				Debug.Log (realHit.normal);
+				Debug.Log(Vector3.Reflect(velocity , realHit.normal));
+					
+				velocity = Vector3.Reflect(velocity * 0.9f, realHit.normal);
+				last_pos = hit.point;
                 hitCounter++;
 
                 if (hitCounter == 2) {

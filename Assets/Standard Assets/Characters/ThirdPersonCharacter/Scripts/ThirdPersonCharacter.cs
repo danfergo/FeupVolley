@@ -65,11 +65,13 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			}
 			else
 			{
+				//HandleGroundedMovement(crouch, jump);
+
 				HandleAirborneMovement();
 			}
 
-			ScaleCapsuleForCrouching(crouch);
-			PreventStandingInLowHeadroom();
+			//ScaleCapsuleForCrouching(crouch);
+			//PreventStandingInLowHeadroom();
 
 			// send input and other state parameters to the animator
 			UpdateAnimator(move);
@@ -141,20 +143,21 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 			// the anim speed multiplier allows the overall speed of walking/running to be tweaked in the inspector,
 			// which affects the movement speed because of the root motion.
-			if (m_IsGrounded && move.magnitude > 0)
-			{
+			//if (m_IsGrounded && move.magnitude > 0)
+			//{
 				m_Animator.speed = m_AnimSpeedMultiplier;
-			}
-			else
-			{
+			//}
+			//else
+			//{
 				// don't use that while airborne
-				m_Animator.speed = 1;
-			}
+			//	m_Animator.speed = 1;
+			//}
 		}
 
 
 		void HandleAirborneMovement()
 		{
+			Debug.Log ("Air borne");
 			// apply extra gravity from multiplier:
 			Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier) - Physics.gravity;
 			m_Rigidbody.AddForce(extraGravityForce);
