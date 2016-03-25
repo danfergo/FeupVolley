@@ -26,6 +26,7 @@ public class CameraController : MonoBehaviour
         transform.LookAt(net.transform.position);
     }
 
+
     // Update is called once per frame
     void Update()
     {
@@ -50,13 +51,17 @@ public class CameraController : MonoBehaviour
                 transform.RotateAround(net.transform.position, Vector3.up, speed * Time.deltaTime);
                 anguloFeito += speed * Time.deltaTime;
             }
-        }
+		} else {
+			transform.position = Camera_initialPosition;
+			transform.eulerAngles = Camera_initialRotation;
+			transform.LookAt(net.transform.position);
+		}
     }
 
 
     void playerCamera(GameObject player)
     {
-        int z = 4, angle = 80;
+        float z = 2.6f, angle = 80;
         if (player2 == player)
         {
             z = 16;
@@ -64,14 +69,15 @@ public class CameraController : MonoBehaviour
         }
         
         // Change camera position
-        transform.position = new Vector3(15, 5, z);
+        transform.position = new Vector3(37, 5, z);
         transform.eulerAngles = new Vector3(10, -90, 0);
 
         // Make the player look directly to the camera
         if (!rotatePlayer)
         {
             Debug.Log("Rotate");
-            player.transform.Rotate(new Vector3(0, angle, 0));
+			player.transform.LookAt (thisCamera.transform.position);
+            //player.transform.Rotate(new Vector3(0, angle, 0));
             rotatePlayer = true;
         }
 
