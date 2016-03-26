@@ -22,6 +22,8 @@ public class CameraController : MonoBehaviour
         rotatePlayer = false;
         playerOnFocus = 1;
         anguloFeito = 0;
+
+        originalFieldOfView = thisCamera.fieldOfView;
         Camera_initialPosition = thisCamera.transform.position;
         Camera_initialRotation = thisCamera.transform.eulerAngles;
         transform.LookAt(net.transform.position);
@@ -29,6 +31,8 @@ public class CameraController : MonoBehaviour
         playerWithTheboo = Random.Range(1, 3);
 
         GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>().useGravity = false;
+
+        initialMove = false;
     }
 
 
@@ -71,7 +75,9 @@ public class CameraController : MonoBehaviour
 			transform.LookAt(net.transform.position);
 
             GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>().useGravity = true;
-		}
+            adjustingCamera();
+
+        }
     }
 
     void playerCamera(GameObject player)
@@ -199,6 +205,22 @@ public class CameraController : MonoBehaviour
             if (temp_2[i].isPlaying)
             {
                 temp_2[i].volume = 0.1f;
+            }
+        }
+    }
+
+    // Adjusting camera according to ball position
+    void adjustingCamera()
+    {
+        if (ball.transform.position.y >= 10)
+        {
+            // Check if ball is going up
+            if (ball.GetComponent<Rigidbody>().velocity.y > 0)
+            {
+                thisCamera.fieldOfView = Mathf.Lerp(thisCamera.fieldOfView, 100, Time.deltaTime * 10);
+            } else
+            {
+                thisCamera.fieldOfView = Mathf.Lerp(thisCamera.fieldOfView, originalFieldOfView, Time.deltaTime * 10);
             }
         }
     }
