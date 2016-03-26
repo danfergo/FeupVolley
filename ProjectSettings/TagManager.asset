@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Audience
+  - barrier
+  - Background
+  - Boo_Sound
+  - General_Sound
+  - Cheer_Sound
+  - Ball
   layers:
   - Default
   - TransparentFX
