@@ -19,8 +19,8 @@ public class TouchUp : MonoBehaviour {
 	void Start () {
 		rb = GetComponent<Rigidbody>();
 
-		airTargetPosition = new Vector3 (0.0f, 9.0f, 9f); // x position is not relevant since it's the players x velocity
-		groundTargetPosition = new Vector3 (0.0f, 8f, 9f); // x position is not relevant since it's the players x velocity
+		airTargetPosition = new Vector3 (4.5f, 9.0f, 9f); // x position is not relevant since it's the players x velocity
+		groundTargetPosition = new Vector3 (4.5f, 8f, 9f); // x position is not relevant since it's the players x velocity
 
         player1Score.text = player1Counter.ToString();
         player2Score.text = player2Counter.ToString();
@@ -28,22 +28,25 @@ public class TouchUp : MonoBehaviour {
 	
 	void OnCollisionExit(Collision collision){
 
+
 		Transform other = collision.gameObject.transform;
         //Debug.Log (other.tag);
 
         if (other.tag == "Player")
         {
-            Rigidbody otherRb = collision.gameObject.GetComponent<Rigidbody>();
-            if (other.transform.position.y < airStrikeHeight)
-            {
-                Vector3 assistedVelocity = (airTargetPosition - other.position).normalized * 15.0f;
-                rb.velocity = new Vector3(rb.velocity.normalized.x * 15.0f, assistedVelocity.y, assistedVelocity.z);
-            }
-            else {
-                // Debug.Log ("Down Strike!");
-                Vector3 assistedVelocity = (groundTargetPosition - other.position).normalized * 30.0f;
-                rb.velocity = new Vector3(rb.velocity.normalized.x * 20.0f, assistedVelocity.y, assistedVelocity.z);
-            }
+			//Rigidbody otherRb = collision.gameObject.GetComponent<Rigidbody>();
+			if (other.transform.position.y < airStrikeHeight)
+			{
+				Debug.Log (airTargetPosition);
+
+				Vector3 assistedVelocity = (airTargetPosition - other.position).normalized * 10.0f;
+				rb.velocity = assistedVelocity; // new Vector3(rb.velocity.normalized.x * 15.0f, assistedVelocity.y, assistedVelocity.z);
+			}
+			else {
+				// Debug.Log ("Down Strike!");
+				Vector3 assistedVelocity = (groundTargetPosition - other.position).normalized * 10.0f;
+				rb.velocity = assistedVelocity; // new Vector3(rb.velocity.normalized.x * 20.0f, assistedVelocity.y, assistedVelocity.z);
+			}
 
             //Vector3 assistedVelocity = (groundTargetPosition - other.position) * 
             //				(	1f + 
