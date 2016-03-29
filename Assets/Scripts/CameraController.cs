@@ -212,15 +212,15 @@ public class CameraController : MonoBehaviour
     // Adjusting camera according to ball position
     void adjustingCamera()
     {
-        if (ball.transform.position.y >= 10)
+        if (ball.transform.position.y >= 6)
         {
             // Check if ball is going up
             if (ball.GetComponent<Rigidbody>().velocity.y > 0)
             {
-                thisCamera.fieldOfView = Mathf.Lerp(thisCamera.fieldOfView, 100, Time.deltaTime * 10);
+				thisCamera.fieldOfView = Mathf.Lerp(thisCamera.fieldOfView, 70, Time.deltaTime * speed);
             } else
             {
-                thisCamera.fieldOfView = Mathf.Lerp(thisCamera.fieldOfView, originalFieldOfView, Time.deltaTime * 10);
+				thisCamera.fieldOfView = Mathf.Lerp(thisCamera.fieldOfView, 40, Time.deltaTime * speed);
             }
         }
     }

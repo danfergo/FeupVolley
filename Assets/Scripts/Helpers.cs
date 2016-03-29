@@ -46,7 +46,7 @@ public class Helpers : MonoBehaviour {
 			//			Debug.Log ((float)gameObject.GetComponent<SphereCollider> ().radius);
 
 			float maxDistance = (velocity * Time.fixedDeltaTime).magnitude;
-			if (Physics.SphereCast(last_pos,0.5f, velocity * Time.fixedDeltaTime,out hit, maxDistance)) {
+			if (Physics.SphereCast(last_pos,0.75f, velocity * Time.fixedDeltaTime,out hit, maxDistance)) {
 
 				//hitted = Physics.Linecast(last_pos + velocity * Time.fixedDeltaTime, sphereHit.point, out hit);
 				//Debug.Log ("shpere hit: " + sphereHit.collider.gameObject.transform.name);
