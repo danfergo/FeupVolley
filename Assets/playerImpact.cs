@@ -4,26 +4,25 @@ using System.Collections;
 public class playerImpact : MonoBehaviour {
 
     public static int playerCollision;
-    public static bool playerWithNoDie;
-    public static int activePowerUp;
+    public static int playerWithNoDie;
+    public static bool activePowerUp;
 
     // Use this for initialization
     void Start () {
-        playerCollision = 1;
     }
 	
 	// Update is called once per frame
 	void Update () {
-
-        if (activePowerUp == 1 && transform.position.x < 9)
+        
+        if (playerWithNoDie == 1 && transform.position.z < 9)
         {
-            if (transform.position.y < 4 && playerWithNoDie)
+            if (transform.position.y < 4 && activePowerUp)
             {
                 transform.position = new Vector3(transform.position.x, 4.1f, transform.position.z);
             }
-        } else if (activePowerUp == 1 && transform.position.x > 9)
+        } else if (playerWithNoDie == 2 && transform.position.z > 9)
         {
-            if (transform.position.y < 4 && playerWithNoDie)
+            if (transform.position.y < 4 && activePowerUp)
             {
                 transform.position = new Vector3(transform.position.x, 4.1f, transform.position.z);
             }

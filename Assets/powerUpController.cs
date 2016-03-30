@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.Characters.ThirdPerson;
+using UnityEngine.UI;
 
 public class powerUpController : MonoBehaviour
 {
 
     public GameObject player1, player2;
 
-    private enum powerUps { NoDie, lowJump, Null }
+    public GameObject canvasText, shadow;
+    private enum powerUps { NoDie, lowJump, lowSpeed,Null }
     private powerUps current_powerup;
     private bool playerWithPowerUp;
     private float spawnPowerUp, time_playerhadwithpowerup;
@@ -24,35 +27,39 @@ public class powerUpController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         // Rotate cube for neat(ish) purposes
-        transform.RotateAround(transform.position, transform.up, Time.deltaTime * 90f);
-
+        transform.RotateAround(transform.position, new Vector3(0, 0, 1), Time.deltaTime * 90f);
+        
         // Check if a power needs to stop
-        if (playerWithPowerUp && Time.time - time_playerhadwithpowerup > 10 || !playerWithPowerUp && Time.time - spawnPowerUp > 20)
+        if ( (playerWithPowerUp && Time.time - time_playerhadwithpowerup > 10) || (!playerWithPowerUp && Time.time - spawnPowerUp > 10))
         {
-            current_powerup = powerUps.Null;
-            playerWithPowerUp = false;
-            time_playerhadwithpowerup = Time.time;
             spawnPowerUp = Time.time;
-            usePowerUps(player_to_give_powerUp, false);
+
+            if (playerWithPowerUp)
+            {
+                usePowerUps(player_to_give_powerUp, false);
+                current_powerup = powerUps.Null;
+                playerWithPowerUp = false;
+            }
         }
-
-        // Check if we need to render the object
-        //GetComponent<MeshRenderer>().enabled = current_powerup != powerUps.Null;
-
+        
         // Check if a powerUp can spawn
         if (current_powerup == powerUps.Null)
         {
             // can generate a powerUp
 
-            if (Random.Range(0, 100) == 1)
+            if (Random.Range(0, 1000) == 1)
             {
                 current_powerup = (powerUps)Random.Range(0, System.Enum.GetNames(typeof(powerUps)).Length - 1);
                 spawnPowerUp = Time.time;
 
             }
         }
+
+        // Check if we need to render the object
+        GetComponent<MeshRenderer>().enabled = current_powerup != powerUps.Null && !playerWithPowerUp;
+        GetComponent<Collider>().enabled = current_powerup != powerUps.Null && !playerWithPowerUp;
+
     }
 
     void OnTriggerEnter(Collider obj)
@@ -63,45 +70,67 @@ public class powerUpController : MonoBehaviour
             time_playerhadwithpowerup = Time.time;
             playerWithPowerUp = true;
 
-            usePowerUps(player_to_give_powerUp,true);
+            usePowerUps(player_to_give_powerUp, true);
+
+            canvasText.SetActive(true);
+            canvasText.GetComponent<Text>().text = current_powerup.ToString();
+            shadow.SetActive(true);
+            shadow.GetComponent<Text>().text = current_powerup.ToString();
+            StartCoroutine(desactivateCanvas());
         }
     }
 
     void usePowerUps(int player, bool activate)
     {
+
         switch (current_powerup)
         {
             case powerUps.lowJump:
                 if (player == 1)
                 {
                     if (activate)
-                        player2.GetComponent<Rigidbody>().mass = 120;
+                        player2.GetComponentInChildren<ThirdPersonCharacter>().m_JumpPower = 5f;
                     else
-                        player2.GetComponent<Rigidbody>().mass = 80;
+                        player2.GetComponentInChildren<ThirdPersonCharacter>().m_JumpPower = 10f;
                 }
                 else
                 {
                     if (activate)
-                        player1.GetComponent<Rigidbody>().mass = 120;
+                        player1.GetComponentInChildren<ThirdPersonCharacter>().m_JumpPower = 5f;
                     else
-                        player1.GetComponent<Rigidbody>().mass = 80;
+                        player1.GetComponentInChildren<ThirdPersonCharacter>().m_JumpPower = 10f;
                 }
                 break;
             case powerUps.NoDie:
-
-                if (activate)
+                
+                playerImpact.activePowerUp = activate;
+                playerImpact.playerWithNoDie = player;
+                break;
+            case powerUps.lowSpeed:
+                if (player == 1)
                 {
-                    playerImpact.activePowerUp = player;
-                    playerImpact.playerWithNoDie = true;
+                    if (activate)
+                        player2.GetComponentInChildren<ThirdPersonCharacter>().m_MoveSpeedMultiplier = 0.8f;
+                    else
+                        player2.GetComponentInChildren<ThirdPersonCharacter>().m_JumpPower = 1.2f;
                 }
                 else
                 {
-                    playerImpact.activePowerUp = 0;
-                    playerImpact.playerWithNoDie = false;
+                    if (activate)
+                        player1.GetComponentInChildren<ThirdPersonCharacter>().m_JumpPower = 0.8f;
+                    else
+                        player1.GetComponentInChildren<ThirdPersonCharacter>().m_JumpPower = 1.2f;
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    IEnumerator desactivateCanvas()
+    {
+        yield return new WaitForSeconds(2);
+        canvasText.SetActive(false);
+        shadow.SetActive(false);
     }
 }

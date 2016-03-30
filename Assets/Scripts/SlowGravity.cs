@@ -16,6 +16,8 @@ public class SlowGravity : MonoBehaviour {
 
     // Update is called once per frame
     void FixedUpdate () {
+
+        if (GetComponent<Rigidbody>().useGravity)
             rb.AddForce(Physics.gravity* -1 * antiGravity * rb.mass);
 
 

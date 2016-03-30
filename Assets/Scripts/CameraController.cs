@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
 
         GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>().useGravity = false;
 
-        initialMove = false;
+        //initialMove = false;
     }
 
 
@@ -82,22 +82,21 @@ public class CameraController : MonoBehaviour
 
     void playerCamera(GameObject player)
     {
-        float z = 2.6f, angle = 80;
+        float z = 4f, angle = 80;
         if (player2 == player)
         {
-            z = 16;
+            z = 13.5f;
             angle = -120;
         }
         
         // Change camera position
-        transform.position = new Vector3(37, 5, z);
-        transform.eulerAngles = new Vector3(10, -90, 0);
+        transform.position = new Vector3(15, 5, z);
+        transform.eulerAngles = new Vector3(13, -85, 1.6f);
 
         // Make the player look directly to the camera
         if (!rotatePlayer)
         {
 			player.transform.LookAt (thisCamera.transform.position);
-            //player.transform.Rotate(new Vector3(0, angle, 0));
             rotatePlayer = true;
         }
 
@@ -212,7 +211,7 @@ public class CameraController : MonoBehaviour
     // Adjusting camera according to ball position
     void adjustingCamera()
     {
-        if (ball.transform.position.y >= 6)
+        if (ball.transform.position.y >= 9)
         {
             // Check if ball is going up
             if (ball.GetComponent<Rigidbody>().velocity.y > 0)

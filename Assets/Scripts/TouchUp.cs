@@ -27,8 +27,6 @@ public class TouchUp : MonoBehaviour {
 		if (other.tag == "Player") {
 			//Rigidbody otherRb = collision.gameObject.GetComponent<Rigidbody>();
 			if (other.transform.position.y < airStrikeHeight) {
-				Debug.Log (airTargetPosition);
-
 				Vector3 assistedVelocity = (airTargetPosition - other.position).normalized * 10.0f;
 				rb.velocity = assistedVelocity; // new Vector3(rb.velocity.normalized.x * 15.0f, assistedVelocity.y, assistedVelocity.z);
 			} else {
